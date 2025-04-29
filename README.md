@@ -1,2 +1,2 @@
-# Taller-Programaci-n-Reactiva
+# Taller programacion Reactiva 
 Taller Programación Reactiva
