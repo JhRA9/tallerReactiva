@@ -11,20 +11,21 @@ import reactor.core.publisher.Flux;
 @RestController
 public class ReactiveController {
 
-    // 1) Endpoint que devuelve un Flux (Reactor) convertido desde un Flowable (RxJava)
+    // Este endpoint devuelve un flujo de datos (Flux) que adapto desde un Flowable de RxJava
     @GetMapping("/rx-numeros")
     public Flux<Long> numeros() {
-        // Crea un flujo RxJava que emite un número cada segundo
+        // Aqui creo un flujo de RxJava que emite un numero cada segundo
         Flowable<Long> rxFlow = Flowable.interval(1000, java.util.concurrent.TimeUnit.MILLISECONDS)
-                                         .take(5); // Emite 5 valores: 0,1,2,3,4
+                                         .take(5); // Limito el flujo para que solo emita 5 valores: 0, 1, 2, 3, 4
 
-        // Adapta Flowable → Flux para que WebFlux lo entienda
+        // Luego convierto este Flowable de RxJava a un Flux de Reactor para que sea compatible con WebFlux
         return RxJava3Adapter.flowableToFlux(rxFlow);
     }
 
-    // 2) Otro ejemplo puro Reactor sin RxJava, solo para comparar
+    // Este endpoint devuelve un flujo de datos (Flux) que genero directamente con Reactor
     @GetMapping("/reactor-numeros")
     public Flux<Long> reactorNumeros() {
+        // Aqui creo un flujo de Reactor que emite un numero cada segundo y lo limito a 5 valores
         return Flux.interval(Duration.ofSeconds(1))
                    .take(5);
     }
